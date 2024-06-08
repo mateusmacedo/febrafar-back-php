@@ -6,9 +6,13 @@ use Illuminate\Validation\ValidationException;
 
 class ActivityService
 {
+    public function __construct(private readonly Activity $activity)
+    {
+    }
+
     protected function checkOverlapping($userId, $startDate, $endDate)
     {
-        $overlapping = Activity::checkOverlapping($userId, $startDate, $endDate);
+        $overlapping = $this->activity->hasOverlappingActivity($userId, $startDate, $endDate);
 
         if ($overlapping) {
             throw ValidationException::withMessages(['dates' => 'There is a conflicting activity for this date range.']);
@@ -19,7 +23,7 @@ class ActivityService
     {
         $this->checkOverlapping($data['user_id'], $data['start_date'], $data['due_date']);
 
-        return Activity::create($data);
+        return $this->activity->create($data);
     }
 
     public function update(array $data, Activity $activity)
@@ -37,15 +41,13 @@ class ActivityService
 
     public function delete($activityId)
     {
-        $activity = Activity::findOrFail($activityId);
-
+        $activity = $this->activity->findOrFail($activityId);
         $activity->delete();
     }
 
     public function get(string $startDate = null, string $endDate = null)
     {
         $filters = compact('startDate', 'endDate');
-
-        return Activity::filter($filters)->get();
+        return $this->activity->filter($filters)->get();
     }
 }
