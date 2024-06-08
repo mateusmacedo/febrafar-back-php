@@ -13,9 +13,9 @@
     },
     "config": {
         "allow-plugins": {
+            "captainhook/plugin-composer": false,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true,
-            "captainhook/plugin-composer": false,
             "phpstan/extension-installer": true
         },
         "optimize-autoloader": true,
@@ -40,11 +40,11 @@
     "name": "febrafar/agenda",
     "prefer-stable": true,
     "require": {
-        "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "php": "^8.1",
         "php-ds/php-ds": "^1.5"
     },
     "require-dev": {
@@ -75,6 +75,12 @@
         "timeweb/phpstan-enum": "^3.1"
     },
     "scripts": {
+        "changelog": "conventional-changelog",
+        "check-style": "vendor/bin/php-cs-fixer fix --diff --verbose --dry-run .",
+        "code-analyze": " php -d memory_limit=-1 vendor/bin/phpstan analyze",
+        "code-analyze:report": " php -d memory_limit=-1 vendor/bin/phpstan analyze --error-format=gitlab > ${REPORT_PATH}quality.json || true",
+        "lint-fix": "vendor/bin/php-cs-fixer fix .",
+        "lint-validation": "vendor/bin/php-cs-fixer fix -v --using-cache no --dry-run --stop-on-violation",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -87,7 +93,19 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ]
+        ],
+        "release": "conventional-changelog --commit",
+        "release:major": "conventional-changelog --major --commit",
+        "release:minor": "conventional-changelog --minor --commit",
+        "release:patch": "conventional-changelog --patch --commit",
+        "release:rc": "conventional-changelog --rc --commit",
+        "unit-test": "vendor/bin/pest --no-coverage --parallel ",
+        "unit-test:coverage": "vendor/bin/pest --coverage",
+        "unit-test:debug": "php -d memory_limit=-1 -d display_errors=on -d xdebug.mode=debug -d xdebug.client_host=127.0.0.1 -d xdebug.client_port=9003 -d xdebug.start_with_request=1 vendor/bin/pest --no-coverage",
+        "unit-test:profile": "vendor/bin/pest --no-coverage --profile",
+        "unit-test:report": "vendor/bin/pest --coverage --profile",
+        "unit-test:type": "vendor/bin/pest --type-coverage"
     },
-    "type": "project"
+    "type": "project",
+    "version": "0.0.1"
 }
