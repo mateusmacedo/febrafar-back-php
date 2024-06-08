@@ -4,6 +4,29 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.4.0](#) (2024-06-08)
+
+### Features
+
+
+##### Auth
+
+* :sparkles: implement authentication with sanctum ([4f5afe](#))
+
+##### Swagger
+
+* :sparkles: add swagger UI integration template ([5e84e7](#))
+
+### Bug Fixes
+
+
+##### Security
+
+* :bug: exclude csrf for api routes ([711db4](#))
+
+
+---
+
 ## [0.3.0](#) (2024-06-08)
 
 ### Features
