@@ -10,22 +10,7 @@ class ActivityService
 {
     protected function checkOverlapping($userId, $startDate, $endDate)
     {
-        $query = Activity::where('user_id', $userId)
-            ->where(function ($query) use ($startDate, $endDate) {
-                if ($startDate && $endDate) {
-                    $query->where(function ($query) use ($startDate, $endDate) {
-                        $query->whereBetween('start_date', [$startDate, $endDate])
-                            ->orWhereBetween('due_date', [$startDate, $endDate]);
-                    });
-                } elseif ($startDate) {
-                    $query->where('start_date', '>=', $startDate);
-                } elseif ($endDate) {
-                    $query->where('due_date', '<=', $endDate);
-                }
-
-            });
-
-        $overlapping = $query->exists();
+        $overlapping = Activity::checkOverlapping($userId, $startDate, $endDate);
 
         if ($overlapping) {
             throw ValidationException::withMessages(['dates' => 'There is a conflicting activity for this date range.']);
@@ -61,16 +46,8 @@ class ActivityService
 
     public function get(string $startDate = null, string $endDate = null)
     {
-        $query = Activity::query();
+        $filters = compact('startDate', 'endDate');
 
-        if ($startDate) {
-            $query->where('start_date', '>=', $startDate);
-        }
-
-        if ($endDate) {
-            $query->where('start_date', '<=', $endDate);
-        }
-
-        return $query->get();
+        return Activity::filter($filters)->get();
     }
 }
