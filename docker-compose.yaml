@@ -48,7 +48,6 @@ services:
     ports:
       - 3306:3306
     image: mysql:latest
-    # command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     expose:
