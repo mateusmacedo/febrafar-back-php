@@ -6,6 +6,7 @@ use App\Http\Requests\ActivityFilterRequest;
 use App\Http\Requests\ActivityStoreRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use App\Models\Activity;
+use App\Services\ActivityService;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -19,6 +20,10 @@ use Illuminate\Validation\ValidationException;
  */
 class ActivityController extends Controller
 {
+    public function __construct(private readonly ActivityService $activityService)
+    {
+    }
+
     /**
      * @OA\Get(
      *     path="/api/activities",
@@ -44,26 +49,9 @@ class ActivityController extends Controller
      */
     public function index(ActivityFilterRequest $request)
     {
-        try {
-            $validatedData = $request->validated();
-        } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
-        }
-
-        $start_date = $validatedData['start_date'] ?? null;
-        $end_date = $validatedData['end_date'] ?? null;
-
-        $query = Activity::query();
-
-        if ($start_date && $end_date) {
-            $query->whereBetween('start_date', [$start_date, $end_date]);
-        } elseif ($start_date) {
-            $query->where('start_date', '>=', $start_date);
-        } elseif ($end_date) {
-            $query->where('start_date', '<=', $end_date);
-        }
-
-        $activities = $query->get();
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+        $activities = $this->activityService->get($start_date, $end_date);
 
         return response()->json($activities);
     }
@@ -97,24 +85,11 @@ class ActivityController extends Controller
     {
         try {
             $validatedData = $request->validated();
+            $activity = $this->activityService->store($validatedData);
+            return response()->json($activity, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         }
-
-        // Verificar sobreposição de datas
-        $overlapping = Activity::where('user_id', $validatedData['user_id'])
-            ->where(function ($query) use ($validatedData) {
-                $query->whereBetween('start_date', [$validatedData['start_date'], $validatedData['due_date']])
-                    ->orWhereBetween('due_date', [$validatedData['start_date'], $validatedData['due_date']]);
-            })
-            ->exists();
-
-        if ($overlapping) {
-            return response()->json(['error' => 'There is a conflicting activity for this date range.'], 422);
-        }
-
-        $activity = Activity::create($validatedData);
-        return response()->json($activity, 201);
     }
 
     /**
@@ -172,10 +147,13 @@ class ActivityController extends Controller
      */
     public function update(UpdateActivityRequest $request, Activity $activity)
     {
-        $validatedData = $request->validated();
-        $activity->update($validatedData);
-
-        return response()->json($activity);
+        try {
+            $validatedData = $request->validated();
+            $activity = $this->activityService->update($validatedData, $activity);
+            return response()->json($activity);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
     }
 
     /**
