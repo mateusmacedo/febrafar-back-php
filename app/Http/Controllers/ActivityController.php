@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ActivityFilterRequest;
+use App\Http\Requests\ActivityStoreRequest;
 use App\Models\Activity;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -42,12 +42,19 @@ class ActivityController extends Controller
      *     security={{"bearerAuth":{}}}
      * )
      */
-    public function index(Request $request)
+    public function index(ActivityFilterRequest $request)
     {
         $query = Activity::query();
 
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $query->whereBetween('start_date', [$request->start_date, $request->end_date]);
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        if ($start_date && $end_date) {
+            $query->whereBetween('start_date', [$start_date, $end_date]);
+        } elseif ($start_date) {
+            $query->where('start_date', '>=', $start_date);
+        } elseif ($end_date) {
+            $query->where('start_date', '<=', $end_date);
         }
 
         $activities = $query->get();
@@ -80,30 +87,12 @@ class ActivityController extends Controller
      *     security={{"bearerAuth":{}}}
      * )
      */
-    public function store(Request $request)
+    public function store(ActivityStoreRequest $request)
     {
         try {
-            $validatedData = $request->validate([
-                'title' => 'required|string|max:255',
-                'type' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'user_id' => 'required|exists:users,id',
-                'start_date' => 'required|date|after_or_equal:today',
-                'due_date' => 'required|date|after_or_equal:start_date',
-                'completion_date' => 'nullable|date|after_or_equal:start_date',
-                'status' => 'required|in:open,completed',
-            ]);
+            $validatedData = $request->validated();
         } catch (ValidationException $e) {
-            Log::error('Validation Error:', $e->errors());
             return response()->json(['errors' => $e->errors()], 422);
-        }
-
-        // Verificar se as datas são finais de semana
-        if (
-            in_array(Carbon::parse($validatedData['start_date'])->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY]) ||
-            in_array(Carbon::parse($validatedData['due_date'])->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY])
-        ) {
-            return response()->json(['error' => 'Activities cannot be scheduled on weekends.'], 422);
         }
 
         // Verificar sobreposição de datas
