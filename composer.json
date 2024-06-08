@@ -48,6 +48,7 @@
         "php-ds/php-ds": "^1.5"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.0",
         "captainhook/captainhook": "^5.23",
         "captainhook/plugin-composer": "^5.3",
         "fakerphp/faker": "^1.9.1",
