@@ -166,6 +166,13 @@ class ActivityControllerTest extends TestCase
         $response = $this->postJson('/api/activities', $data, $this->headers);
 
         $response->assertStatus(422)
-            ->assertJson(['error' => 'Activities cannot be scheduled on weekends.']);
+            ->assertJson([
+                'message' => 'The start date cannot be a weekend. (and 1 more error)',
+                'errors' => [
+                    'start_date' => ['The start date cannot be a weekend.'],
+                    'due_date' => ['The due date cannot be a weekend.'],
+                ],
+            ]);
+
     }
 }
