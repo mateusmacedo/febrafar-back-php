@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ActivityFilterRequest;
 use App\Http\Requests\ActivityStoreRequest;
+use App\Http\Requests\UpdateActivityRequest;
 use App\Models\Activity;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -164,20 +164,11 @@ class ActivityController extends Controller
      *     security={{"bearerAuth":{}}}
      * )
      */
-    public function update(Request $request, Activity $activity)
+    public function update(UpdateActivityRequest $request, Activity $activity)
     {
-        $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'type' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'user_id' => 'sometimes|required|exists:users,id',
-            'start_date' => 'sometimes|required|date|after_or_equal:today',
-            'due_date' => 'sometimes|required|date|after_or_equal:start_date',
-            'completion_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:open,completed',
-        ]);
-
+        $validatedData = $request->validated();
         $activity->update($validatedData);
+
         return response()->json($activity);
     }
 
