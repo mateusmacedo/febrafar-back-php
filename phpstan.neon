@@ -1,0 +1,5 @@
+parameters:
+    paths:
+        - modules
+        - tests
+    level: 8
