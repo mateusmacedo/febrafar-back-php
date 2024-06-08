@@ -4,6 +4,11 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [1.0.0](#) (2024-06-08)
+
+
+---
+
 ## [0.4.0](#) (2024-06-08)
 
 ### Features
