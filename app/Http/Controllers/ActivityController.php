@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class ActivityController extends Controller
@@ -37,7 +36,6 @@ class ActivityController extends Controller
                 'status' => 'required|in:open,completed',
             ]);
         } catch (ValidationException $e) {
-            Log::error('Validation Error:', $e->errors());
             return response()->json(['errors' => $e->errors()], 422);
         }
 
