@@ -4,6 +4,26 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.3.0](#) (2024-06-08)
+
+### Features
+
+
+##### Activity
+
+* :sparkles: add date filtering and validation ([78218b](#))
+
+##### Api
+
+* :sparkles: add activity management features ([dca7ef](#))
+
+##### Auth
+
+* :sparkles: add user authentication with sanctum ([0174a7](#))
+
+
+---
+
 ## [0.2.0](#) (2024-06-08)
 
 ### Features
