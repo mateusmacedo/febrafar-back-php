@@ -44,10 +44,16 @@ class ActivityController extends Controller
      */
     public function index(ActivityFilterRequest $request)
     {
-        $query = Activity::query();
+        try {
+            $validatedData = $request->validated();
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
 
-        $start_date = $request->input('start_date');
-        $end_date = $request->input('end_date');
+        $start_date = $validatedData['start_date'] ?? null;
+        $end_date = $validatedData['end_date'] ?? null;
+
+        $query = Activity::query();
 
         if ($start_date && $end_date) {
             $query->whereBetween('start_date', [$start_date, $end_date]);
