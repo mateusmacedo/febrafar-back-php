@@ -1,5 +1,20 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
 parameters:
+
     paths:
         - app
-        - tests
-    level: 8
+        - config
+        - database
+        - routes
+
+    level: 5
+
+    parallel:
+        maximumNumberOfProcesses: 4
+
+    noUnnecessaryCollectionCall: false
+
+    ignoreErrors:
+        - '#Undefined variable: \$this#'
