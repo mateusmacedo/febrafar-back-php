@@ -8,19 +8,19 @@ use Illuminate\Validation\ValidationException;
 
 class ActivityService
 {
-    protected function checkOverlapping($userId, $startDate, $dueDate)
+    protected function checkOverlapping($userId, $startDate, $endDate)
     {
         $query = Activity::where('user_id', $userId)
-            ->where(function ($query) use ($startDate, $dueDate) {
-                if ($startDate && $dueDate) {
-                    $query->where(function ($query) use ($startDate, $dueDate) {
-                        $query->whereBetween('start_date', [$startDate, $dueDate])
-                            ->orWhereBetween('due_date', [$startDate, $dueDate]);
+            ->where(function ($query) use ($startDate, $endDate) {
+                if ($startDate && $endDate) {
+                    $query->where(function ($query) use ($startDate, $endDate) {
+                        $query->whereBetween('start_date', [$startDate, $endDate])
+                            ->orWhereBetween('due_date', [$startDate, $endDate]);
                     });
                 } elseif ($startDate) {
                     $query->where('start_date', '>=', $startDate);
-                } elseif ($dueDate) {
-                    $query->where('due_date', '<=', $dueDate);
+                } elseif ($endDate) {
+                    $query->where('due_date', '<=', $endDate);
                 }
 
             });
