@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 .docker/**
 localhost.session.sql
+_ide_helper.php
