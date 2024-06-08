@@ -26,22 +26,24 @@ class Activity extends Model
 
     public static function checkOverlapping($userId, $startDate, $endDate)
     {
-        $query = self::where('user_id', $userId)
+        return Activity::where('user_id', $userId)
             ->where(function ($query) use ($startDate, $endDate) {
-                if ($startDate && $endDate) {
-                    $query->where(function ($query) use ($startDate, $endDate) {
-                        $query->whereBetween('start_date', [$startDate, $endDate])
-                            ->orWhereBetween('due_date', [$startDate, $endDate]);
-                    });
-                } elseif ($startDate) {
-                    $query->where('start_date', '>=', $startDate);
-                } elseif ($endDate) {
-                    $query->where('due_date', '<=', $endDate);
-                }
+                $query->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('start_date', [$startDate, $endDate])
+                        ->orWhereBetween('due_date', [$startDate, $endDate])
+                        ->orWhere(function ($query) use ($startDate, $endDate) {
+                            $query->where('start_date', '<=', $startDate)
+                                ->where('due_date', '>=', $endDate);
+                        });
+                });
+            })
+            ->exists();
+    }
 
-            });
 
-        return $query->exists();
+    public function hasOverlappingActivity($userId, $startDate, $endDate)
+    {
+        return Activity::checkOverlapping($userId, $startDate, $endDate);
     }
 
     public function scopeFilter($query, $filters)
