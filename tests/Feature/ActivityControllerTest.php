@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Activity;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,7 +27,7 @@ class ActivityControllerTest extends TestCase
 
     private function getNextWeekday($date)
     {
-        while (in_array($date->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY])) {
+        while (in_array($date->dayOfWeek, [CarbonInterface::SATURDAY, CarbonInterface::SUNDAY])) {
             $date->addDay();
         }
         return $date;
@@ -34,7 +35,7 @@ class ActivityControllerTest extends TestCase
 
     public function test_can_create_activity()
     {
-        $startDate = $this->getNextWeekday(Carbon::now()->next(Carbon::MONDAY));
+        $startDate = $this->getNextWeekday(Carbon::now()->next(CarbonInterface::MONDAY));
         $data = [
             'title' => 'Test Activity',
             'type' => 'Custom Type',
@@ -124,7 +125,7 @@ class ActivityControllerTest extends TestCase
 
     public function test_cannot_create_activity_with_overlapping_dates()
     {
-        $startDate = $this->getNextWeekday(Carbon::now()->next(Carbon::MONDAY));
+        $startDate = $this->getNextWeekday(Carbon::now()->next(CarbonInterface::MONDAY));
         Activity::factory()->create([
             'user_id' => $this->user->id,
             'start_date' => $startDate->format('Y-m-d H:i:s'),
@@ -144,7 +145,11 @@ class ActivityControllerTest extends TestCase
         $response = $this->postJson('/api/activities', $data, $this->headers);
 
         $response->assertStatus(422)
-            ->assertJson(['error' => 'There is a conflicting activity for this date range.']);
+            ->assertJson([
+                'errors' => [
+                    'dates' => ['There is a conflicting activity for this date range.'],
+                ],
+            ]);
     }
 
     public function test_cannot_create_activity_on_weekend()
