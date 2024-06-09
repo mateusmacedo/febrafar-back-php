@@ -1,0 +1,95 @@
+version: "3"
+services:
+  # Application service layer
+  appserver:
+    image: webdevops/php:8.3
+    container_name: appserver
+    hostname: appserver
+    volumes:
+      - .:/home/febrafrar-agenda/current
+    env_file:
+      docker/php/env
+    expose:
+      - 9000
+    ports:
+      - 9000:9000
+    depends_on:
+      - dbserver
+      - webserver
+      - cacheserver
+      - queueserver
+    networks:
+      net:
+        ipv4_address: 172.0.0.3
+  # Web service layer
+  webserver:
+    image: webdevops/nginx
+    container_name: webserver
+    hostname: webserver
+    env_file:
+      docker/web/env
+    volumes:
+      - ./docker/web/vhost.conf:/opt/docker/etc/nginx/vhost.conf
+      - ./.docker/volume/nginx/logs:/var/log/nginx/
+      - .:/home/febrafrar-agenda/current
+    expose:
+      - 80
+      - 443
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      net:
+        ipv4_address: 172.0.0.2
+  # Data persistence service layer
+  dbserver:
+    hostname: dbserver
+    container_name: dbserver
+    ports:
+      - 3306:3306
+    image: mysql:latest
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    expose:
+      - 3306
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+      - ./.docker/volume/mysql:/var/lib/mysql
+    networks:
+      net:
+        ipv4_address: 172.0.0.4
+  cacheserver:
+    image: redis
+    container_name: cacheserver
+    hostname: cacheserver
+    command: redis-server --databases 1
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+    volumes:
+      - ./.docker/volume/redis:/data
+    networks:
+      net:
+        ipv4_address: 172.0.0.5
+  # Queue service layer
+  queueserver:
+    image: rabbitmq:management
+    container_name: queueserver
+    expose:
+      - 5672
+      - 15672
+    ports:
+      - 5672:5672
+      - 15672:15672
+    env_file:
+      docker/rabbit/env
+    networks:
+      net:
+        ipv4_address: 172.0.0.6
+networks:
+  net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.0.0.0/24
