@@ -17,3 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+.docker/**
+localhost.session.sql
+_ide_helper.php
+storage/api-docs/api-docs.json
