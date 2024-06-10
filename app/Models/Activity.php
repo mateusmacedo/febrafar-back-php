@@ -21,8 +21,9 @@ use Illuminate\Support\Carbon;
  * @property string $status
  * @property-read User $user
  *
- * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
- * @method static Builder whereBetween($column, array $values, $boolean = 'and', $not = false)
+ * @method static \Illuminate\Database\Eloquent\Builder where($column, $operator = null, $value = null, $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder whereBetween($column, array $values, $boolean = 'and', $not = false)
+ * @method static \Illuminate\Database\Eloquent\Model|$this create(array $attributes = [])
  */
 class Activity extends Model
 {
@@ -50,7 +51,7 @@ class Activity extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'start_date' => 'datetime',

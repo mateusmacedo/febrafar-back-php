@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +14,7 @@ class ActivityController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        /** @var Builder $query */
+        /** @var \Illuminate\Database\Query\Builder $query */
         $query = Activity::query()->where('user_id', Auth::id());
 
         if ($request->has('start_date') && $request->has('end_date')) {
@@ -33,7 +32,6 @@ class ActivityController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            // Validate the incoming request data.
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
@@ -62,11 +60,10 @@ class ActivityController extends Controller
                 throw ValidationException::withMessages($errors);
             }
 
-            /** @phpstan-ignore-next-line */
             $startDateOverlaps = Activity::where('user_id', Auth::id())
                 ->whereBetween('start_date', [$validatedData['start_date'], $validatedData['due_date']])
                 ->exists();
-            /** @phpstan-ignore-next-line */
+
             $dueDateOverlaps = Activity::where('user_id', Auth::id())
                 ->whereBetween('due_date', [$validatedData['start_date'], $validatedData['due_date']])
                 ->exists();

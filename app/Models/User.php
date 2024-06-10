@@ -14,7 +14,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property string $email
  * @property string $password
- * @method Token createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
+ * @method \Laravel\Sanctum\NewAccessToken createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
+ * @method static \Illuminate\Database\Eloquent\Model|$this create(array $attributes = [])
+ * @method static \Illuminate\Database\Eloquent\Builder where($column, $operator = null, $value = null, $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Factories\Factory<User> factory($count = null, $state = [])
  */
 class User extends Authenticatable
 {
@@ -34,7 +37,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -44,7 +47,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
