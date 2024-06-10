@@ -14,9 +14,8 @@
     "config": {
         "allow-plugins": {
             "captainhook/plugin-composer": false,
-            "php-http/discovery": true,
-            "phpstan/extension-installer": true,
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -54,6 +53,7 @@
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.58",
         "jangregor/phpstan-prophecy": "^1.0",
+        "larastan/larastan": "^2.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "marcocesarato/php-conventional-changelog": "^1.17",
@@ -62,7 +62,6 @@
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-faker": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.4",
-        "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.11",
         "phpstan/phpstan-beberlei-assert": "^1.1",
         "phpstan/phpstan-mockery": "^1.1",
