@@ -12,10 +12,18 @@ use App\Services\Contracts\AuthServiceInterface;
 use Illuminate\Http\JsonResponse;
 
 /**
- * @OA\Info(title="Auth API", version="1.0")
- * @OA\Tag(
- *     name="Auth",
- *     description="Authentication"
+ * @OA\Info(
+ *     title="Auth API",
+ *     version="1.0"
+ * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     description="Use a Bearer token to authenticate",
+ *     name="Authorization",
+ *     in="header",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     securityScheme="bearerAuth",
  * )
  */
 class AuthController extends Controller
@@ -50,7 +58,7 @@ class AuthController extends Controller
      *         response=201,
      *         description="User registered successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="user", ref="#/components/schemas/User")
+     *             @OA\Property(property="user", type="object", ref="#/components/schemas/User")
      *         )
      *     ),
      *     @OA\Response(response=422, description="Validation error")
@@ -77,7 +85,7 @@ class AuthController extends Controller
      *         response=200,
      *         description="User logged in successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="user", ref="#/components/schemas/User"),
+     *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
      *             @OA\Property(property="token", type="string")
      *         )
      *     ),
@@ -103,7 +111,7 @@ class AuthController extends Controller
      *     path="/api/auth/logout",
      *     tags={"Auth"},
      *     summary="Logout a user",
-     *     security={{"sanctum":{}}},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="User logged out successfully",
