@@ -19,7 +19,7 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => 'password',
         ];
 
-        $response = $this->postJson('/api/register', $data);
+        $response = $this->postJson('/api/auth/register', $data);
 
         $response->assertStatus(201)
             ->assertJsonStructure(['user' => ['id', 'name', 'email']]);
@@ -37,7 +37,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->postJson('/api/login', $data);
+        $response = $this->postJson('/api/auth/login', $data);
 
         $response->assertStatus(200)
             ->assertJsonStructure(['token']);
@@ -48,7 +48,7 @@ class AuthControllerTest extends TestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->postJson('/api/logout', [], [
+        $response = $this->postJson('/api/auth/logout', [], [
             'Authorization' => "Bearer $token",
         ]);
 
