@@ -31,14 +31,4 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::where('email', $email)->first();
     }
-
-    /**
-     * Delete a user.
-     * @param User $user
-     * @return void
-     */
-    public function delete(User $user): void
-    {
-        $user->delete();
-    }
 }

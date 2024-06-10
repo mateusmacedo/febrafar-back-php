@@ -19,11 +19,4 @@ interface UserRepositoryInterface
      * @return User|null
      */
     public function findByEmail(string $email): ?User;
-
-    /**
-     * Delete a user.
-     * @param User $user
-     * @return void
-     */
-    public function delete(User $user): void;
 }
