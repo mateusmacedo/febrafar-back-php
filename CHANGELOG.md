@@ -4,6 +4,48 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.3.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.2.0...v0.3.0) (2024-06-10)
+
+### Features
+
+* :sparkles: add auth controller and routes for API authentication ([60f298](https://github.com/mateusmacedo/febrafar-back-php/commit/60f2984f9c7349016236a7a17b19b14a05678518))
+* :sparkles: add sanctum driver for api authentication ([285cfe](https://github.com/mateusmacedo/febrafar-back-php/commit/285cfe91d7aee187c67a60c69f876c7ac4b8ca23))
+
+### Bug Fixes
+
+* :bug: correct password field access error during login ([9247b3](https://github.com/mateusmacedo/febrafar-back-php/commit/9247b3120a4de4d961880b4d6f6f5df257a41484))
+
+### Code Refactoring
+
+* :gear: restructure auth routes for clarity ([5a64b6](https://github.com/mateusmacedo/febrafar-back-php/commit/5a64b6d985f123efb69c771f33e3a1346b7ec141))
+* :hammer: improve request input handling and typing ([312975](https://github.com/mateusmacedo/febrafar-back-php/commit/3129757b91833b6464054058469b55e419a74feb))
+* :hammer: improve user model docblocks and array types ([77feb6](https://github.com/mateusmacedo/febrafar-back-php/commit/77feb66fff9fce956c004b8e0b53515fa8925a41))
+* :hammer: update code for consistency and clarity ([5787ec](https://github.com/mateusmacedo/febrafar-back-php/commit/5787ec1c051b078f538dac1097bef59668e7bdd5))
+* ♻️ update auth routes in tests ([2ba472](https://github.com/mateusmacedo/febrafar-back-php/commit/2ba47272330c95fb908baa7edbdfaa90a01c3f20))
+
+### Tests
+
+* :test_tube: add auth controller tests for user endpoints ([84e56d](https://github.com/mateusmacedo/febrafar-back-php/commit/84e56d1716c79a7c428fe9855e7cbdd5ba52f1f6))
+* :test_tube: enhance auth tests with faker integration ([66298e](https://github.com/mateusmacedo/febrafar-back-php/commit/66298e4d9e3e5ee7cd007aa08cf8c196b3411a57))
+* :test_tube: improve email generation in login test ([e638c0](https://github.com/mateusmacedo/febrafar-back-php/commit/e638c055e9ea2b9ead5943e873dbb812740d37a9))
+* :test_tube: remove outdated example test files ([80fb91](https://github.com/mateusmacedo/febrafar-back-php/commit/80fb91419f29fd068e28e79606daf4f6789fd24b))
+
+### Continuous Integrations
+
+* :construction_worker: exclude vendor directory from phpstan ([8d944d](https://github.com/mateusmacedo/febrafar-back-php/commit/8d944d8a79972343d03a7b620bb1f8b76c559293))
+
+### Documentation
+
+* :books: add missing property annotations in User model ([fb5d1e](https://github.com/mateusmacedo/febrafar-back-php/commit/fb5d1e2865f27bf8fc6fdf6caf3597df259456ef))
+
+### Chores
+
+* :wrench: remove unused sanctum middleware from api group ([fcd51d](https://github.com/mateusmacedo/febrafar-back-php/commit/fcd51dcc26cefbbb5624a3a999f06243adf667d4))
+* :wrench: update phpstan config for stricter checks ([b472d8](https://github.com/mateusmacedo/febrafar-back-php/commit/b472d80256f930e709511bc473e55b9e94101145))
+
+
+---
+
 ## [0.2.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.1.0...v0.2.0) (2024-06-10)
 
 ### Features
