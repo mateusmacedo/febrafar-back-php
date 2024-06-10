@@ -21,5 +21,8 @@ parameters:
     scanFiles:
     - %currentWorkingDirectory%/vendor/autoload.php
 
+    excludePaths:
+        - %rootDir%/../vendor
+
     ignoreErrors:
         - '#Undefined variable: \$this#'
