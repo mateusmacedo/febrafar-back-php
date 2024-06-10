@@ -4,6 +4,23 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.3.2](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.3.1...v0.3.2) (2024-06-10)
+
+### Code Refactoring
+
+* :hammer: improve type annotations and doc comments ([62774a](https://github.com/mateusmacedo/febrafar-back-php/commit/62774ab51542322756aa0c8047d0b50c361a5030))
+
+### Continuous Integrations
+
+* :construction_worker: add larastan extension to phpstan configuration ([022910](https://github.com/mateusmacedo/febrafar-back-php/commit/02291031b583989cd9e6d2cb8b8b1af219ab2d38))
+
+### Chores
+
+* :wrench: updated composer dependencies ([822fed](https://github.com/mateusmacedo/febrafar-back-php/commit/822fed5c56c2b55b2ee5a0707737f3a5328c033a))
+
+
+---
+
 ## [0.3.1](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.3.0...v0.3.1) (2024-06-10)
 
 ### Features
