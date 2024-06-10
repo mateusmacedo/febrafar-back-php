@@ -29,6 +29,45 @@ All notable changes to this project will be documented in this file.
 ### Continuous Integrations
 
 * :construction_worker: disable unit testsuite in phpunit config ([bbe8a8](https://github.com/mateusmacedo/febrafar-back-php/commit/bbe8a88fa6f4517390bbc592a628422091f5f22f))
+* :construction_worker: re-enable sqlite database for testing ([d23453](https://github.com/mateusmacedo/febrafar-back-php/commit/d23453812f86795dae84a6bb8a835310b0d9e65e))
+
+### Documentation
+
+* :books: add properties, constants, and casts to Activity model ([58d5ca](https://github.com/mateusmacedo/febrafar-back-php/commit/58d5caecbc3866c824f0a6a02d2e612808aa5044))
+
+### Chores
+
+* :wrench: reorganize dependencies for pest and phpstan ([1a53c7](https://github.com/mateusmacedo/febrafar-back-php/commit/1a53c7ee71b47a595e46de544c13f18a250418b0))
+* :wrench: update excluded vendor path in phpstan config ([e5486a](https://github.com/mateusmacedo/febrafar-back-php/commit/e5486a9fb45b76d8a14827a13c3fe3b5536e5f85))
+
+
+---
+
+## [0.3.1](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.3.0...v0.3.1) (2024-06-10)
+
+### Features
+
+* :sparkles: add date filtering and validation to activities ([7b6854](https://github.com/mateusmacedo/febrafar-back-php/commit/7b68549669af6ae28fd2783e4db808e70d8b8e37))
+* :sparkles: add date format constant for activity model ([579e31](https://github.com/mateusmacedo/febrafar-back-php/commit/579e319254d38f0c3254d2d6c98355ebdf4ce12f))
+
+### Bug Fixes
+
+* :bug: enforce user authorization on activities ([525596](https://github.com/mateusmacedo/febrafar-back-php/commit/5255965a269ec00ee8b52ac2ac2c27e8e957e12b))
+
+### Code Refactoring
+
+* :hammer: add typings and docblocks to activity model ([1d547d](https://github.com/mateusmacedo/febrafar-back-php/commit/1d547dd3e64233aaac166c6ff3fcefb0c17fc97d))
+* :hammer: relocate activities route under api group ([bddc71](https://github.com/mateusmacedo/febrafar-back-php/commit/bddc716e7b75e74f6a1d7c671cbfa97d97855842))
+
+### Tests
+
+* :test_tube: add authorization and validation to tests ([043984](https://github.com/mateusmacedo/febrafar-back-php/commit/0439841d0dbddac88036c01a925981c4cf63a982))
+* :test_tube: enhance activity API tests for clarity ([67b7e9](https://github.com/mateusmacedo/febrafar-back-php/commit/67b7e93360fc457bd09bc48fb88089ebda66b4f0))
+* :test_tube: improve test robustness and clarity ([6dc5d3](https://github.com/mateusmacedo/febrafar-back-php/commit/6dc5d38a1cc02ccd09403c56ecef88f320bad6b7))
+
+### Continuous Integrations
+
+* :construction_worker: disable unit testsuite in phpunit config ([bbe8a8](https://github.com/mateusmacedo/febrafar-back-php/commit/bbe8a88fa6f4517390bbc592a628422091f5f22f))
 
 ### Documentation
 
