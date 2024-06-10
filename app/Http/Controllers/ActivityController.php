@@ -35,6 +35,7 @@ class ActivityController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
+            // Validate the incoming request data.
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
@@ -45,40 +46,49 @@ class ActivityController extends Controller
                 'completion_date' => 'nullable|date|after_or_equal:start_date',
                 'status' => 'required|in:open,completed',
             ]);
+
             $errors = [];
+            $locale = app()->getLocale();
 
-            if (
-                in_array(Carbon::parse($validatedData['start_date'])->dayOfWeek, [CarbonInterface::SATURDAY, CarbonInterface::SUNDAY], true) ||
-                in_array(Carbon::parse($validatedData['due_date'])->dayOfWeek, [CarbonInterface::SATURDAY, CarbonInterface::SUNDAY], true)
-            ) {
-                throw ValidationException::withMessages([
-                    'start_date' => ['The start date cannot be a weekend.'],
-                    'due_date' => ['The due date cannot be a weekend.'],
-                ]);
+            $startDayOfWeek = Carbon::parse($validatedData['start_date'])->locale($locale)->dayName;
+            $dueDayOfWeek = Carbon::parse($validatedData['due_date'])->locale($locale)->dayName;
+
+            if (in_array(Carbon::parse($validatedData['start_date'])->dayOfWeek, [CarbonInterface::SATURDAY, CarbonInterface::SUNDAY], true)) {
+                $errors['start_date'] = ["The start date cannot be a weekend (falls on {$startDayOfWeek})."];
             }
 
-            /** @phpstan-ignore-next-line */
-            $startDateOverlaps = Activity::where('user_id', $validatedData['user_id'])
-                ->whereBetween('start_date', [$validatedData['start_date'], $validatedData['due_date']])
-                ->exists();
-
-            if ($startDateOverlaps) {
-                $errors['start_date'] = ['The user already has an activity starting in this period.'];
-            }
-
-            /** @phpstan-ignore-next-line */
-            $dueDateOverlaps = Activity::where('user_id', $validatedData['user_id'])
-                ->whereBetween('due_date', [$validatedData['start_date'], $validatedData['due_date']])
-                ->exists();
-
-            if ($dueDateOverlaps) {
-                $errors['due_date'] = ['The user already has an activity ending in this period.'];
+            if (in_array(Carbon::parse($validatedData['due_date'])->dayOfWeek, [CarbonInterface::SATURDAY, CarbonInterface::SUNDAY], true)) {
+                $errors['due_date'] = ["The due date cannot be a weekend (falls on {$dueDayOfWeek})."];
             }
 
             if ($errors !== []) {
                 throw ValidationException::withMessages($errors);
             }
 
+            /** @phpstan-ignore-next-line */
+            $startDateOverlaps = Activity::where('user_id', $validatedData['user_id'])
+                ->whereBetween('start_date', [$validatedData['start_date'], $validatedData['due_date']])
+                ->exists();
+            /** @phpstan-ignore-next-line */
+            $dueDateOverlaps = Activity::where('user_id', $validatedData['user_id'])
+                ->whereBetween('due_date', [$validatedData['start_date'], $validatedData['due_date']])
+                ->exists();
+
+            $overlapErrors = [];
+
+            if ($startDateOverlaps) {
+                $overlapErrors['start_date'] = ['The user already has an activity starting in this period.'];
+            }
+
+            if ($dueDateOverlaps) {
+                $overlapErrors['due_date'] = ['The user already has an activity ending in this period.'];
+            }
+
+            if ($overlapErrors !== []) {
+                throw ValidationException::withMessages($overlapErrors);
+            }
+
+            // Create the activity.
             $activity = Activity::create($validatedData);
 
             return response()->json($activity, 201);
