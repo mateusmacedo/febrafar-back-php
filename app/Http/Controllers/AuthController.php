@@ -2,55 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Factories\Contracts\AuthCredentialsDTOFactoryInterface;
+use App\Factories\Contracts\RegisterUserDTOFactoryInterface;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\Contracts\AuthServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers
+ */
 class AuthController extends Controller
 {
-    public function register(Request $request): JsonResponse
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+    protected AuthServiceInterface $authService;
+    protected RegisterUserDTOFactoryInterface $registerUserDTOFactory;
+    protected AuthCredentialsDTOFactoryInterface $authCredentialsDTOFactory;
 
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+    public function __construct(
+        AuthServiceInterface $authService,
+        RegisterUserDTOFactoryInterface $registerUserDTOFactory,
+        AuthCredentialsDTOFactoryInterface $authCredentialsDTOFactory
+    ) {
+        $this->authService = $authService;
+        $this->registerUserDTOFactory = $registerUserDTOFactory;
+        $this->authCredentialsDTOFactory = $authCredentialsDTOFactory;
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $registerUserDTO = $this->registerUserDTOFactory->createFromRequest($request);
+
+        $user = $this->authService->register($registerUserDTO);
 
         return response()->json(['user' => $user], 201);
     }
 
     public function login(Request $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+        $authCredentialsDTO = $this->authCredentialsDTOFactory->createFromRequest($request);
 
-        $user = User::where('email', $request->input('email'))->first();
+        $user = $this->authService->authenticate($authCredentialsDTO);
 
-        if (! $user || ! Hash::check($request->input('password'), $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json(['user' => $user, 'token' => $token], 200);
     }
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->tokens()->delete();
+        $this->authService->logout($request->user());
 
-        return response()->json(['message' => 'Logged out successfully']);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 }
