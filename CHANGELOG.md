@@ -4,6 +4,20 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.2.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.1.0...v0.2.0) (2024-06-10)
+
+### Features
+
+* :sparkles: add activity management endpoints ([287f62](https://github.com/mateusmacedo/febrafar-back-php/commit/287f62cc492df02bf1a21187a847622210599bb7))
+* :sparkles: add activity model and migrations ([e460a5](https://github.com/mateusmacedo/febrafar-back-php/commit/e460a5ac3ee01db2c369d67ca95840b7a6e272ab))
+
+### Tests
+
+* :test_tube: add feature tests for activities api ([fecc4e](https://github.com/mateusmacedo/febrafar-back-php/commit/fecc4e109c1eb8a46f54a392eab66d9354b2d842))
+
+
+---
+
 ## [0.1.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.0.0...v0.1.0) (2024-06-10)
 
 ### Features
