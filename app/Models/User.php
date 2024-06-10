@@ -11,6 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
  * User model.
  *
  * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
  * @method Token createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
  */
 class User extends Authenticatable
