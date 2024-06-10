@@ -28,13 +28,16 @@ class AuthControllerTest extends TestCase
 
     public function test_login_user(): void
     {
-        User::factory()->create([
-            'email' => 'test@example.com',
+        /**
+         * @var User $user
+         */
+        $user = User::factory()->create([
+            'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'),
         ]);
 
         $data = [
-            'email' => 'test@example.com',
+            'email' => $user->email,
             'password' => 'password',
         ];
 
