@@ -10,7 +10,7 @@ class ActivityFactory extends Factory
 {
     protected $model = Activity::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'title' => $this->faker->sentence,
