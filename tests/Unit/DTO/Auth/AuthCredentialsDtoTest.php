@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\DTO\Auth;
 
 use App\DTO\Auth\AuthCredentialsDTO;
 use PHPUnit\Framework\TestCase;
