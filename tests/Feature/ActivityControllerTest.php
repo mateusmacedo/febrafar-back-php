@@ -12,11 +12,8 @@ use Tests\TestCase;
 
 class ActivityControllerTest extends TestCase
 {
+    const BASE_URL = "/api/activities";
     use RefreshDatabase, WithFaker;
-
-    /**
-     * @var User
-     */
     protected User $user;
     protected array $headers;
 
@@ -24,7 +21,7 @@ class ActivityControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create()->first();
         $token = $this->user->createToken('auth_token')->plainTextToken;
         $this->headers = ['Authorization' => "Bearer $token"];
     }
@@ -44,12 +41,12 @@ class ActivityControllerTest extends TestCase
             'title' => $this->faker->sentence,
             'type' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'start_date' => $startDate->format('Y-m-d H:i:s'),
-            'due_date' => $startDate->copy()->addDay()->format('Y-m-d H:i:s'),
+            'start_date' => $startDate->format(Activity::DATE_FORMAT),
+            'due_date' => $startDate->copy()->addDay()->format(Activity::DATE_FORMAT),
             'status' => 'open',
         ];
 
-        $response = $this->postJson('/api/activities', $data, $this->headers);
+        $response = $this->postJson(self::BASE_URL . '', $data, $this->headers);
 
         $response->assertStatus(201)
             ->assertJsonFragment(['title' => $data['title']]);
@@ -57,13 +54,13 @@ class ActivityControllerTest extends TestCase
 
     public function test_can_update_activity(): void
     {
-        $activity = Activity::factory()->create(['user_id' => $this->user->id]);
+        $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
         $data = [
             'title' => $this->faker->sentence,
             'status' => 'open',
         ];
 
-        $response = $this->putJson("/api/activities/{$activity->id}", $data, $this->headers);
+        $response = $this->putJson(self::BASE_URL . "/{$activity->id}", $data, $this->headers);
 
         $response->assertStatus(200)
             ->assertJsonFragment(['title' => $data['title']]);
@@ -71,9 +68,9 @@ class ActivityControllerTest extends TestCase
 
     public function test_can_delete_activity(): void
     {
-        $activity = Activity::factory()->create(['user_id' => $this->user->id]);
+        $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
 
-        $response = $this->deleteJson("/api/activities/{$activity->id}", [], $this->headers);
+        $response = $this->deleteJson(self::BASE_URL . "/{$activity->id}", [], $this->headers);
 
         $response->assertStatus(204);
     }
@@ -82,7 +79,7 @@ class ActivityControllerTest extends TestCase
     {
         Activity::factory()->count(5)->create(['user_id' => $this->user->id]);
 
-        $response = $this->getJson('/api/activities', $this->headers);
+        $response = $this->getJson(self::BASE_URL, $this->headers);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -94,7 +91,7 @@ class ActivityControllerTest extends TestCase
     {
         $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
 
-        $response = $this->getJson("/api/activities/{$activity->id}", $this->headers);
+        $response = $this->getJson(self::BASE_URL . "/{$activity->id}", $this->headers);
 
         $response->assertStatus(200)
             ->assertJson($activity->toArray());
@@ -110,17 +107,17 @@ class ActivityControllerTest extends TestCase
 
         Activity::factory()->create([
             'user_id' => $this->user->id,
-            'start_date' => $startDate1->format('Y-m-d H:i:s'),
-            'due_date' => $dueDate1->format('Y-m-d H:i:s'),
+            'start_date' => $startDate1->format(Activity::DATE_FORMAT),
+            'due_date' => $dueDate1->format(Activity::DATE_FORMAT),
         ]);
 
         Activity::factory()->create([
             'user_id' => $this->user->id,
-            'start_date' => $startDate2->format('Y-m-d H:i:s'),
-            'due_date' => $dueDate2->format('Y-m-d H:i:s'),
+            'start_date' => $startDate2->format(Activity::DATE_FORMAT),
+            'due_date' => $dueDate2->format(Activity::DATE_FORMAT),
         ]);
 
-        $response = $this->getJson('/api/activities?start_date=' . Carbon::now()->subDays(4)->format('Y-m-d H:i:s') . '&end_date=' . Carbon::now()->addDays(1)->format('Y-m-d H:i:s'), $this->headers);
+        $response = $this->getJson(self::BASE_URL . '?start_date=' . Carbon::now()->subDays(4)->format(Activity::DATE_FORMAT) . '&end_date=' . Carbon::now()->addDays(1)->format(Activity::DATE_FORMAT), $this->headers);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -133,25 +130,27 @@ class ActivityControllerTest extends TestCase
         $startDate = $this->getNextWeekday(Carbon::now()->next(CarbonInterface::MONDAY));
         Activity::factory()->create([
             'user_id' => $this->user->id,
-            'start_date' => $startDate->format('Y-m-d H:i:s'),
-            'due_date' => $this->getNextWeekday($startDate->copy()->addDays(2))->format('Y-m-d H:i:s'),
+            'start_date' => $startDate->format(Activity::DATE_FORMAT),
+            'due_date' => $this->getNextWeekday($startDate->copy()->addDays(2))->format(Activity::DATE_FORMAT),
         ]);
 
         $data = [
             'title' => $this->faker->sentence,
             'type' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'start_date' => $startDate->format('Y-m-d H:i:s'),
-            'due_date' => $this->getNextWeekday($startDate->copy()->addDays(1))->format('Y-m-d H:i:s'),
+            'start_date' => $startDate->format(Activity::DATE_FORMAT),
+            'due_date' => $this->getNextWeekday($startDate->copy()->addDays(1))->format(Activity::DATE_FORMAT),
             'status' => 'open',
         ];
 
-        $response = $this->postJson('/api/activities', $data, $this->headers);
+        $response = $this->postJson(self::BASE_URL, $data, $this->headers);
 
         $response->assertStatus(422)
-            ->assertJson(['errors' => [
-                'start_date' => ['The user already has an activity starting in this period.'],
-            ]]);
+            ->assertJson([
+                'errors' => [
+                    'start_date' => ['The user already has an activity starting in this period.'],
+                ]
+            ]);
     }
 
     public function test_cannot_create_activity_with_overlapping_due_dates(): void
@@ -159,25 +158,27 @@ class ActivityControllerTest extends TestCase
         $startDate = $this->getNextWeekday(Carbon::now()->next(CarbonInterface::MONDAY));
         Activity::factory()->create([
             'user_id' => $this->user->id,
-            'start_date' => $startDate->format('Y-m-d H:i:s'),
-            'due_date' => $this->getNextWeekday($startDate->copy()->addDays(2))->format('Y-m-d H:i:s'),
+            'start_date' => $startDate->format(Activity::DATE_FORMAT),
+            'due_date' => $this->getNextWeekday($startDate->copy()->addDays(2))->format(Activity::DATE_FORMAT),
         ]);
 
         $data = [
             'title' => $this->faker->sentence,
             'type' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'start_date' => $this->getNextWeekday($startDate->copy()->addDays(1))->format('Y-m-d H:i:s'),
-            'due_date' => $startDate->copy()->addDays(2)->format('Y-m-d H:i:s'),
+            'start_date' => $this->getNextWeekday($startDate->copy()->addDays(1))->format(Activity::DATE_FORMAT),
+            'due_date' => $startDate->copy()->addDays(2)->format(Activity::DATE_FORMAT),
             'status' => 'open',
         ];
 
-        $response = $this->postJson('/api/activities', $data, $this->headers);
+        $response = $this->postJson(self::BASE_URL, $data, $this->headers);
 
         $response->assertStatus(422)
-            ->assertJson(['errors' => [
-                'due_date' => ['The user already has an activity ending in this period.'],
-            ]]);
+            ->assertJson([
+                'errors' => [
+                    'due_date' => ['The user already has an activity ending in this period.'],
+                ]
+            ]);
     }
 
     public function test_cannot_create_activity_on_weekend(): void
@@ -190,17 +191,19 @@ class ActivityControllerTest extends TestCase
             'title' => $this->faker->sentence,
             'type' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'start_date' => $startDate->format('Y-m-d H:i:s'),
-            'due_date' => $dueDate->format('Y-m-d H:i:s'),
+            'start_date' => $startDate->format(Activity::DATE_FORMAT),
+            'due_date' => $dueDate->format(Activity::DATE_FORMAT),
             'status' => 'open',
         ];
 
-        $response = $this->postJson('/api/activities', $data, $this->headers);
+        $response = $this->postJson(self::BASE_URL, $data, $this->headers);
 
         $response->assertStatus(422)
-            ->assertJson(['errors' => [
-                'start_date' => ["The start date cannot be a weekend (falls on {$startDate->englishDayOfWeek})."],
-                'due_date' => ["The due date cannot be a weekend (falls on {$dueDate->englishDayOfWeek})."],
-            ]]);
+            ->assertJson([
+                'errors' => [
+                    'start_date' => ["The start date cannot be a weekend (falls on {$startDate->englishDayOfWeek})."],
+                    'due_date' => ["The due date cannot be a weekend (falls on {$dueDate->englishDayOfWeek})."],
+                ]
+            ]);
     }
 }
