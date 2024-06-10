@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Auth\AuthCredentialsDTO;
+use App\DTO\Auth\LogoutDTO;
 use App\DTO\Auth\RegisterUserDTO;
 use App\Factories\Contracts\UserFactoryInterface;
 use App\Models\User;
@@ -41,9 +42,9 @@ class AuthService implements AuthServiceInterface
         return null;
     }
 
-    public function logout(User $user): void
+    public function logout(LogoutDTO $logoutDTO): void
     {
-        $token = $user->currentAccessToken();
+        $token = $logoutDTO->user->currentAccessToken();
         if ($token instanceof PersonalAccessToken) {
             $token->delete();
         }
