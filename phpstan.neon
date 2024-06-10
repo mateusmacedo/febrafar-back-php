@@ -22,7 +22,7 @@ parameters:
     - %currentWorkingDirectory%/vendor/autoload.php
 
     excludePaths:
-        - %rootDir%/../vendor
+        - %rootDir%/vendor
 
     ignoreErrors:
         - '#Undefined variable: \$this#'
