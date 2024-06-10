@@ -8,23 +8,21 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class ActivityController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Activity::query();
+        /** @var Builder $query */
+        $query = Activity::query()->where('user_id', Auth::id());
 
         if ($request->has('start_date') && $request->has('end_date')) {
-            /** @var Builder $query */
-            $query->whereBetween(
-                'start_date',
-                [
-                    $request->input('start_date'),
-                    $request->input('end_date')
-                ]
-            );
+            $query->whereBetween('start_date', [
+                $request->input('start_date'),
+                $request->input('end_date')
+            ]);
         }
 
         $activities = $query->get();
@@ -40,7 +38,6 @@ class ActivityController extends Controller
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'user_id' => 'required|exists:users,id',
                 'start_date' => 'required|date|after_or_equal:today',
                 'due_date' => 'required|date|after_or_equal:start_date',
                 'completion_date' => 'nullable|date|after_or_equal:start_date',
@@ -66,11 +63,11 @@ class ActivityController extends Controller
             }
 
             /** @phpstan-ignore-next-line */
-            $startDateOverlaps = Activity::where('user_id', $validatedData['user_id'])
+            $startDateOverlaps = Activity::where('user_id', Auth::id())
                 ->whereBetween('start_date', [$validatedData['start_date'], $validatedData['due_date']])
                 ->exists();
             /** @phpstan-ignore-next-line */
-            $dueDateOverlaps = Activity::where('user_id', $validatedData['user_id'])
+            $dueDateOverlaps = Activity::where('user_id', Auth::id())
                 ->whereBetween('due_date', [$validatedData['start_date'], $validatedData['due_date']])
                 ->exists();
 
@@ -89,6 +86,7 @@ class ActivityController extends Controller
             }
 
             // Create the activity.
+            $validatedData['user_id'] = Auth::id();
             $activity = Activity::create($validatedData);
 
             return response()->json($activity, 201);
@@ -99,17 +97,24 @@ class ActivityController extends Controller
 
     public function show(Activity $activity): JsonResponse
     {
+        if ($activity->user_id !== Auth::id()) {
+            return response()->json(['error' => Activity::UNAUTHORIZED], 403);
+        }
+
         return response()->json($activity);
     }
 
     public function update(Request $request, Activity $activity): JsonResponse
     {
+        if ($activity->user_id !== Auth::id()) {
+            return response()->json(['error' => Activity::UNAUTHORIZED], 403);
+        }
+
         $validatedData = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'type' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'user_id' => 'sometimes|required|exists:users,id',
-            'start_date' => 'sometimes|required|date',
+            'start_date' => 'sometimes|required|date|after_or_equal:today',
             'due_date' => 'sometimes|required|date|after_or_equal:start_date',
             'completion_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'required|in:open,completed',
@@ -121,6 +126,10 @@ class ActivityController extends Controller
 
     public function destroy(Activity $activity): JsonResponse
     {
+        if ($activity->user_id !== Auth::id()) {
+            return response()->json(['error' => Activity::UNAUTHORIZED], 403);
+        }
+
         $activity->delete();
         return response()->json(null, 204);
     }
