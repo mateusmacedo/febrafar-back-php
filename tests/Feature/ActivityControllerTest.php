@@ -14,8 +14,10 @@ class ActivityControllerTest extends TestCase
 {
     const BASE_URL = "/api/activities";
     use RefreshDatabase, WithFaker;
-    protected User $user;
-    protected array $headers;
+
+    /** @var User $user */
+    protected $user;
+    protected array $headers = [];
 
     protected function setUp(): void
     {
@@ -54,6 +56,7 @@ class ActivityControllerTest extends TestCase
 
     public function test_can_update_activity(): void
     {
+        /** @var Activity $activity */
         $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
         $data = [
             'title' => $this->faker->sentence,
@@ -68,6 +71,7 @@ class ActivityControllerTest extends TestCase
 
     public function test_can_delete_activity(): void
     {
+        /** @var Activity $activity */
         $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
 
         $response = $this->deleteJson(self::BASE_URL . "/{$activity->id}", [], $this->headers);
@@ -89,6 +93,7 @@ class ActivityControllerTest extends TestCase
 
     public function test_can_show_activity(): void
     {
+        /** @var Activity $activity */
         $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
 
         $response = $this->getJson(self::BASE_URL . "/{$activity->id}", $this->headers);
