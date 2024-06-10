@@ -14,9 +14,9 @@
     "config": {
         "allow-plugins": {
             "captainhook/plugin-composer": false,
-            "pestphp/pest-plugin": true,
             "php-http/discovery": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "pestphp/pest-plugin": true
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -61,15 +61,12 @@
         "nunomaduro/collision": "^7.0",
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-faker": "^2.0",
-        "pestphp/pest-plugin-type-coverage": "^2.8",
-        "php-mock/php-mock-phpunit": "^2.10",
+        "pestphp/pest-plugin-laravel": "^2.4",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.11",
         "phpstan/phpstan-beberlei-assert": "^1.1",
         "phpstan/phpstan-mockery": "^1.1",
-        "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-strict-rules": "^1.6",
-        "phpunit/phpunit": "^10.5",
         "ramsey/conventional-commits": "^1.5",
         "spatie/laravel-ignition": "^2.0",
         "struggle-for-php/sfp-phpstan-psr-log": "^0.21.0",
@@ -100,7 +97,7 @@
         "release:minor": "conventional-changelog --minor --commit",
         "release:patch": "conventional-changelog --patch --commit",
         "release:rc": "conventional-changelog --rc --commit",
-        "unit-test": "vendor/bin/pest --no-coverage --parallel ",
+        "unit-test": "vendor/bin/pest --no-coverage --parallel",
         "unit-test:coverage": "vendor/bin/pest --coverage",
         "unit-test:debug": "php -d memory_limit=-1 -d display_errors=on -d xdebug.mode=debug -d xdebug.client_host=127.0.0.1 -d xdebug.client_port=9003 -d xdebug.start_with_request=1 vendor/bin/pest --no-coverage",
         "unit-test:profile": "vendor/bin/pest --no-coverage --profile",
