@@ -3,6 +3,7 @@
 namespace App\Services\Contracts;
 
 use App\DTO\Auth\AuthCredentialsDTO;
+use App\DTO\Auth\LogoutDTO;
 use App\DTO\Auth\RegisterUserDTO;
 use App\Models\User;
 
@@ -24,8 +25,8 @@ interface AuthServiceInterface
 
     /**
      * Logout the authenticated user.
-     * @param User $user
+     * @param LogoutDTO $logoutDTO
      * @return void
      */
-    public function logout(User $user): void;
+    public function logout(LogoutDTO $logoutDTO): void;
 }
