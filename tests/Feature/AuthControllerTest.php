@@ -4,17 +4,18 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
-    public function test_register_user()
+    public function test_register_user(): void
     {
         $data = [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -25,7 +26,7 @@ class AuthControllerTest extends TestCase
             ->assertJsonStructure(['user' => ['id', 'name', 'email']]);
     }
 
-    public function test_login_user()
+    public function test_login_user(): void
     {
         User::factory()->create([
             'email' => 'test@example.com',
@@ -43,13 +44,20 @@ class AuthControllerTest extends TestCase
             ->assertJsonStructure(['token']);
     }
 
-    public function test_logout_user()
+    public function test_logout_user(): void
     {
+        /**
+         * @var User $user
+         */
         $user = User::factory()->create();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        /**
+         * @var \Laravel\Sanctum\NewAccessToken $token
+         */
+        $token = $user->createToken('auth_token');
+        $textToken = $token->plainTextToken;
 
         $response = $this->postJson('/api/auth/logout', [], [
-            'Authorization' => "Bearer $token",
+            'Authorization' => "Bearer $textToken",
         ]);
 
         $response->assertStatus(200)
