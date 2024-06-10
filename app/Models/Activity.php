@@ -29,6 +29,7 @@ class Activity extends Model
     use HasFactory;
 
     const UNAUTHORIZED = 'unauthorized';
+    const DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +50,7 @@ class Activity extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array<string>
+     * @var array
      */
     protected $casts = [
         'start_date' => 'datetime',
