@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\DTO\Auth\AuthCredentialsDTO;
 use PHPUnit\Framework\TestCase;
 
-class AuthCredentialsDTOTest extends TestCase
+class AuthCredentialsDtoTest extends TestCase
 {
     private $authCredentialsDTO;
 
