@@ -15,7 +15,6 @@ class ActivityControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /**
-     *
      * @var User
      */
     protected User $user;
@@ -25,9 +24,9 @@ class ActivityControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create()->first();
-        $token = $this->user->createToken('auth_token');
-        $this->headers = ['Authorization' => "Bearer $token->plainTextToken"];
+        $this->user = User::factory()->create();
+        $token = $this->user->createToken('auth_token')->plainTextToken;
+        $this->headers = ['Authorization' => "Bearer $token"];
     }
 
     private function getNextWeekday(Carbon $date): Carbon
@@ -42,10 +41,9 @@ class ActivityControllerTest extends TestCase
     {
         $startDate = $this->getNextWeekday(Carbon::now()->next(CarbonInterface::MONDAY));
         $data = [
-            'title' => 'Test Activity',
-            'type' => 'Custom Type',
-            'description' => 'Description for test activity',
-            'user_id' => $this->user->id,
+            'title' => $this->faker->sentence,
+            'type' => $this->faker->word,
+            'description' => $this->faker->paragraph,
             'start_date' => $startDate->format('Y-m-d H:i:s'),
             'due_date' => $startDate->copy()->addDay()->format('Y-m-d H:i:s'),
             'status' => 'open',
@@ -54,26 +52,26 @@ class ActivityControllerTest extends TestCase
         $response = $this->postJson('/api/activities', $data, $this->headers);
 
         $response->assertStatus(201)
-            ->assertJsonFragment(['title' => 'Test Activity']);
+            ->assertJsonFragment(['title' => $data['title']]);
     }
 
     public function test_can_update_activity(): void
     {
-        $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
+        $activity = Activity::factory()->create(['user_id' => $this->user->id]);
         $data = [
-            'title' => 'Updated Activity',
+            'title' => $this->faker->sentence,
             'status' => 'open',
         ];
 
         $response = $this->putJson("/api/activities/{$activity->id}", $data, $this->headers);
 
         $response->assertStatus(200)
-            ->assertJsonFragment(['title' => 'Updated Activity']);
+            ->assertJsonFragment(['title' => $data['title']]);
     }
 
     public function test_can_delete_activity(): void
     {
-        $activity = Activity::factory()->create(['user_id' => $this->user->id])->first();
+        $activity = Activity::factory()->create(['user_id' => $this->user->id]);
 
         $response = $this->deleteJson("/api/activities/{$activity->id}", [], $this->headers);
 
@@ -99,7 +97,7 @@ class ActivityControllerTest extends TestCase
         $response = $this->getJson("/api/activities/{$activity->id}", $this->headers);
 
         $response->assertStatus(200)
-            ->assertJsonFragment(['title' => $activity->title]);
+            ->assertJson($activity->toArray());
     }
 
     public function test_can_filter_activities_by_date_range(): void
@@ -125,7 +123,9 @@ class ActivityControllerTest extends TestCase
         $response = $this->getJson('/api/activities?start_date=' . Carbon::now()->subDays(4)->format('Y-m-d H:i:s') . '&end_date=' . Carbon::now()->addDays(1)->format('Y-m-d H:i:s'), $this->headers);
 
         $response->assertStatus(200)
-            ->assertJsonCount(1);
+            ->assertJsonStructure([
+                '*' => ['id', 'title', 'type', 'description', 'user_id', 'start_date', 'due_date', 'completion_date', 'status', 'created_at', 'updated_at']
+            ]);
     }
 
     public function test_cannot_create_activity_with_overlapping_start_dates(): void
@@ -138,10 +138,9 @@ class ActivityControllerTest extends TestCase
         ]);
 
         $data = [
-            'title' => 'Overlapping Activity',
-            'type' => 'Custom Type',
-            'description' => 'Description for test activity',
-            'user_id' => $this->user->id,
+            'title' => $this->faker->sentence,
+            'type' => $this->faker->word,
+            'description' => $this->faker->paragraph,
             'start_date' => $startDate->format('Y-m-d H:i:s'),
             'due_date' => $this->getNextWeekday($startDate->copy()->addDays(1))->format('Y-m-d H:i:s'),
             'status' => 'open',
@@ -152,7 +151,6 @@ class ActivityControllerTest extends TestCase
         $response->assertStatus(422)
             ->assertJson(['errors' => [
                 'start_date' => ['The user already has an activity starting in this period.'],
-
             ]]);
     }
 
@@ -166,10 +164,9 @@ class ActivityControllerTest extends TestCase
         ]);
 
         $data = [
-            'title' => 'Overlapping Activity',
-            'type' => 'Custom Type',
-            'description' => 'Description for test activity',
-            'user_id' => $this->user->id,
+            'title' => $this->faker->sentence,
+            'type' => $this->faker->word,
+            'description' => $this->faker->paragraph,
             'start_date' => $this->getNextWeekday($startDate->copy()->addDays(1))->format('Y-m-d H:i:s'),
             'due_date' => $startDate->copy()->addDays(2)->format('Y-m-d H:i:s'),
             'status' => 'open',
@@ -190,10 +187,9 @@ class ActivityControllerTest extends TestCase
         $dueDate = $startDate->copy(); // Mesma data para evitar problemas de ordem
 
         $data = [
-            'title' => 'Weekend Activity',
-            'type' => 'Custom Type',
-            'description' => 'Description for test activity',
-            'user_id' => $this->user->id,
+            'title' => $this->faker->sentence,
+            'type' => $this->faker->word,
+            'description' => $this->faker->paragraph,
             'start_date' => $startDate->format('Y-m-d H:i:s'),
             'due_date' => $dueDate->format('Y-m-d H:i:s'),
             'status' => 'open',
