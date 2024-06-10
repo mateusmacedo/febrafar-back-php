@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\DTO\Auth\AuthCredentialsDTO;
+use App\DTO\Auth\LogoutDTO;
 use App\DTO\Auth\RegisterUserDTO;
 use App\Factories\Contracts\UserFactoryInterface;
 use App\Models\User;
@@ -87,7 +88,9 @@ class AuthServiceTest extends TestCase
 
         $user->shouldReceive('currentAccessToken')->andReturn($token); //@phpstan-ignore-line
 
-        $this->authService->logout($user);
+        $logoutDTO = new LogoutDTO($user);
+
+        $this->authService->logout($logoutDTO);
 
         $this->assertTrue(true); // No exceptions means success
     }
