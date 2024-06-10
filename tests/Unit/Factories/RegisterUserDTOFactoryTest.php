@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Factories;
 
 use App\DTO\Auth\RegisterUserDTO;
 use App\Factories\RegisterUserDTOFactory;
