@@ -8,6 +8,19 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     title="User",
+ *     required={"id", "name", "email", "password"},
+ *     @OA\Property(property="id", type="integer", format="int64", example=1),
+ *     @OA\Property(property="name", type="string", example="John Doe"),
+ *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+ *     @OA\Property(property="password", type="string", format="password", example="password"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2022-01-01T00:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2022-01-01T00:00:00Z")
+ * )
+ *
  * User model.
  *
  * @property int $id

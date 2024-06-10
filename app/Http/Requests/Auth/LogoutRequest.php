@@ -7,8 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @OA\Schema(
  *     schema="LogoutRequest",
- *     required={},
- *     @OA\Property(property="Authorization", type="string", example="Bearer {token}")
+ *     type="object",
+ *     properties={}
  * )
  */
 class LogoutRequest extends FormRequest
