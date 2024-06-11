@@ -4,6 +4,53 @@ namespace App\Http\Requests\Activity;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="ActivityStoreRequest",
+ *     required={"title", "type", "start_date", "due_date", "status"},
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         description="The title of the activity",
+ *         maxLength=255
+ *     ),
+ *     @OA\Property(
+ *         property="type",
+ *         type="string",
+ *         description="The type of the activity",
+ *         maxLength=255
+ *     ),
+ *     @OA\Property(
+ *         property="description",
+ *         type="string",
+ *         description="The description of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="start_date",
+ *         type="string",
+ *         format="date",
+ *         description="The start date of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="due_date",
+ *         type="string",
+ *         format="date",
+ *         description="The due date of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="completion_date",
+ *         type="string",
+ *         format="date",
+ *         description="The completion date of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         type="string",
+ *         enum={"open", "completed"},
+ *         description="The status of the activity"
+ *     )
+ * )
+ */
 class ActivityStoreRequest extends FormRequest
 {
     /**
@@ -29,6 +76,7 @@ class ActivityStoreRequest extends FormRequest
             'due_date' => 'required|date|after_or_equal:start_date',
             'completion_date' => 'nullable|date|after_or_equal:start_date',
             'status' => 'required|in:open,completed',
+            'user_id' => 'exists:users,id',
         ];
     }
 }

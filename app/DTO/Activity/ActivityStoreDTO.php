@@ -5,14 +5,14 @@ namespace App\DTO\Activity;
 class ActivityStoreDTO
 {
     public function __construct(
-        public string $title,
-        public string $type,
-        public ?string $description,
-        public \DateTimeInterface $startDate,
-        public \DateTimeInterface $dueDate,
-        public ?\DateTimeInterface $completionDate,
-        public string $status,
-        public int $userId
+        public readonly string $title,
+        public readonly string $type,
+        public readonly ?string $description,
+        public readonly \DateTimeInterface $startDate,
+        public readonly \DateTimeInterface $dueDate,
+        public readonly ?\DateTimeInterface $completionDate,
+        public readonly string $status,
+        public readonly int $userId
     ) {
     }
 }
