@@ -16,20 +16,16 @@ use Illuminate\Validation\ValidationException;
 
 class ActivityService implements ActivityServiceInterface
 {
-    protected $activityRepository;
-    protected $activityFactory;
-
     public function __construct(
-        ActivityRepositoryInterface $activityRepository,
-        ActivityFactoryInterface $activityFactory
+        private readonly ActivityRepositoryInterface $activityRepository,
+        private readonly ActivityFactoryInterface $activityFactory
     ) {
-        $this->activityRepository = $activityRepository;
-        $this->activityFactory = $activityFactory;
+
     }
 
     public function listActivities(ActivityIndexDTO $dto): Collection
     {
-        return $this->activityRepository->findByDateRange($dto);
+        return $this->activityRepository->find($dto);
     }
 
     public function showActivity(ActivityShowDTO $dto): ?Activity
