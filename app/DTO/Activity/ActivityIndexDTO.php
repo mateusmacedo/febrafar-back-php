@@ -5,9 +5,9 @@ namespace App\DTO\Activity;
 class ActivityIndexDTO
 {
     public function __construct(
-        public ?\DateTimeInterface $startDate,
-        public ?\DateTimeInterface $endDate,
-        public int $userId
+        public readonly ?\DateTimeInterface $startDate,
+        public readonly ?\DateTimeInterface $endDate,
+        public readonly int $userId
     ) {
     }
 }
