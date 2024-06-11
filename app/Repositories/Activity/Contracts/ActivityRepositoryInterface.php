@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 interface ActivityRepositoryInterface
 {
-    public function findByDateRange(ActivityIndexDTO $dateRange): Collection;
+    public function find(ActivityIndexDTO $dateRange): Collection;
     public function findById(ActivityShowDTO $dto): ?Activity;
     public function save(Activity $activity): Activity;
     public function delete(Activity $activity): void;
