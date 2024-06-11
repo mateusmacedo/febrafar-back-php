@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [1.0.1](https://github.com/mateusmacedo/febrafar-back-php/compare/v1.0.0...v1.0.1) (2024-06-11)
+
+### Features
+
+* :sparkles: add swagger configuration to .env.example ([9ad0cc](https://github.com/mateusmacedo/febrafar-back-php/commit/9ad0cc4b645dafe3b3de20f09b3c0bf10c1b7fe3))
+
+
+---
+
 ## [1.0.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.5.1...v1.0.0) (2024-06-11)
 
 ### Features

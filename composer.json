@@ -105,5 +105,5 @@
         "unit-test:type": "vendor/bin/pest --type-coverage"
     },
     "type": "project",
-    "version": "1.0.0"
+    "version": "1.0.1"
 }
