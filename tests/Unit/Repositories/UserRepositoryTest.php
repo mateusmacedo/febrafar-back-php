@@ -38,7 +38,7 @@ class UserRepositoryTest extends TestCase
     {
         $email = 'john@example.com';
         $user = Mockery::mock(User::class);
-        $user->shouldReceive('getAttribute')->with('email')->andReturn($email);
+        $user->shouldReceive('getAttribute')->with('email')->andReturn($email); //@phpstan-ignore-line
 
         $this->userRepository->shouldReceive('findByEmail')
             ->once()
