@@ -8,6 +8,62 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
+ * @OA\Schema(
+ *     schema="Activity",
+ *     required={"title", "type", "user_id", "start_date", "due_date", "status"},
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         description="The ID of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         description="The title of the activity",
+ *         maxLength=255
+ *     ),
+ *     @OA\Property(
+ *         property="type",
+ *         type="string",
+ *         description="The type of the activity",
+ *         maxLength=255
+ *     ),
+ *     @OA\Property(
+ *         property="description",
+ *         type="string",
+ *         description="The description of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="user_id",
+ *         type="integer",
+ *         description="The ID of the user associated with the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="start_date",
+ *         type="string",
+ *         format="date",
+ *         description="The start date of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="due_date",
+ *         type="string",
+ *         format="date",
+ *         description="The due date of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="completion_date",
+ *         type="string",
+ *         format="date",
+ *         description="The completion date of the activity"
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         type="string",
+ *         enum={"open", "completed"},
+ *         description="The status of the activity"
+ *     ),
+ * )
+ *
  * Activity model.
  *
  * @property int $id
