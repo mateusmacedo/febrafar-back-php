@@ -4,6 +4,65 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.4.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.3.2...v0.4.0) (2024-06-11)
+
+### Features
+
+* :sparkles: add auth credentials dto factory interface ([07edf1](https://github.com/mateusmacedo/febrafar-back-php/commit/07edf18a7293549969917700f51c75b335d8dae8))
+* :sparkles: add AuthCredentialsDTO for auth handling ([d758d2](https://github.com/mateusmacedo/febrafar-back-php/commit/d758d20f05beeeb69e9bd8d06dfd2837d122f477))
+* :sparkles: add authorization for user operations ([0fbb2c](https://github.com/mateusmacedo/febrafar-back-php/commit/0fbb2c297088cdd226761246fb59a11a288a4ffe))
+* :sparkles: add auth service for user management ([320034](https://github.com/mateusmacedo/febrafar-back-php/commit/32003418d1e4c6054ff2f2aaae029d358763cd2a))
+* :sparkles: add factory for auth credentials dto ([661f5c](https://github.com/mateusmacedo/febrafar-back-php/commit/661f5c72d38b8a54dd18e1e866df076c9fae8c13))
+* :sparkles: add factory for creating RegisterUserDTO from request ([39f3e8](https://github.com/mateusmacedo/febrafar-back-php/commit/39f3e82ef02f34e6cb3d2590d676c8258ede45d6))
+* :sparkles: add factory interface for user registration DTO ([470e20](https://github.com/mateusmacedo/febrafar-back-php/commit/470e20a06dee3042cd54f10aedd6791110eff256))
+* :sparkles: add logout dto for structured auth handling ([9b2372](https://github.com/mateusmacedo/febrafar-back-php/commit/9b23721f8654a2f0f87b9a9203914f5e467d4259))
+* :sparkles: add middleware to log requests ([367679](https://github.com/mateusmacedo/febrafar-back-php/commit/3676796e1684a26067e227f4129f8b9801761d23))
+* :sparkles: add policies and service providers ([168576](https://github.com/mateusmacedo/febrafar-back-php/commit/1685762bfbad258502d2b2faf457eb354ba27fda))
+* :sparkles: add register request form validation ([928bba](https://github.com/mateusmacedo/febrafar-back-php/commit/928bbae78ef716ec89773405df17833503c147c1))
+* :sparkles: add RegisterUserDTO for user registration ([c78b4b](https://github.com/mateusmacedo/febrafar-back-php/commit/c78b4b3b8f388f1b5bf735e5e1bb01c07d45ef97))
+* :sparkles: add swagger docs to auth endpoints ([bba528](https://github.com/mateusmacedo/febrafar-back-php/commit/bba528975e34d57f9232a35ac3096fbff066e1cf))
+* :sparkles: add swagger UI template for API docs ([83a5a9](https://github.com/mateusmacedo/febrafar-back-php/commit/83a5a90d9f878995fc8f6ff605c6025def955bc4))
+* :sparkles: add user factory interface and implementation ([0ff464](https://github.com/mateusmacedo/febrafar-back-php/commit/0ff46455cd5e9ebefff57a7ce94fd2b75ee71560))
+* :sparkles: add user repository interface and implementation ([fcd5b7](https://github.com/mateusmacedo/febrafar-back-php/commit/fcd5b79eff69d96f25f871602a6630dab759ae13))
+* :sparkles: include static Swagger UI in the doc build ([6c73dc](https://github.com/mateusmacedo/febrafar-back-php/commit/6c73dc8855aaa54dd19b719cc43cd3923c258861))
+* ✨ add log request middleware and update kernel ([072a60](https://github.com/mateusmacedo/febrafar-back-php/commit/072a6049b9dc10194f13b86b28fbf573fbe0b393))
+
+### Code Refactoring
+
+* :hammer: remove user deletion method ([7b9ddc](https://github.com/mateusmacedo/febrafar-back-php/commit/7b9ddcc608624d93e1484822297c3f2176837784))
+* :hammer: reorder middleware for readability ([1757fc](https://github.com/mateusmacedo/febrafar-back-php/commit/1757fc13394dfe0713ad0649ac7943fed5d7588f))
+* :hammer: update auth controller for better abstraction ([2002c6](https://github.com/mateusmacedo/febrafar-back-php/commit/2002c6141c59c26332980c1e37375136b0ade1b2))
+
+### Tests
+
+* :test_tube: add unit test for auth credentials factory ([1269a0](https://github.com/mateusmacedo/febrafar-back-php/commit/1269a07872ca46395c83d208cacd9e0d383d5c41))
+* :test_tube: add unit test for UserFactory creation from DTO ([94370d](https://github.com/mateusmacedo/febrafar-back-php/commit/94370d53391f20c577f5f02267293ec672656317))
+* :test_tube: add unit tests for AuthCredentialsDTO ([07b139](https://github.com/mateusmacedo/febrafar-back-php/commit/07b1395e12fb51403674e13054b2b3953b7eae67))
+* :test_tube: add unit tests for auth service ([134ccd](https://github.com/mateusmacedo/febrafar-back-php/commit/134ccd839396bb83e23a1ed0af59f37e18fcb467))
+* :test_tube: add unit tests for RegisterUserDTO ([332de5](https://github.com/mateusmacedo/febrafar-back-php/commit/332de55e9d973f6d92f9bd840fe3f17122eb7f46))
+* :test_tube: add unit tests for RegisterUserDTOFactory ([8cabec](https://github.com/mateusmacedo/febrafar-back-php/commit/8cabec05bbb184e4af463463a603eed36737fda8))
+* :test_tube: add unit tests for UserPolicy methods ([3439e4](https://github.com/mateusmacedo/febrafar-back-php/commit/3439e4f3bc22eacd45e65bd12011801f75ff90d9))
+* :test_tube: enable previously commented unit tests ([42f024](https://github.com/mateusmacedo/febrafar-back-php/commit/42f024fb6607d93ed69528449ca18a027adf2469))
+* :test_tube: fix class name case in unit test ([0e156b](https://github.com/mateusmacedo/febrafar-back-php/commit/0e156bd0b1145f1e8edc5e98935864268fe70a9c))
+* :test_tube: improve auth tests for reliability and coverage ([eb48f7](https://github.com/mateusmacedo/febrafar-back-php/commit/eb48f78ffccd3515ab533c296413aa4d26669e25))
+* :test_tube: reorganize unit tests for better structure ([0d84d0](https://github.com/mateusmacedo/febrafar-back-php/commit/0d84d06f18e6d320d29c86d94d92de7a8abf10aa))
+* :test_tube: update logout test to use LogoutDTO ([95c432](https://github.com/mateusmacedo/febrafar-back-php/commit/95c43256c43c203a12e4cb4b28ad13d5ca0b069a))
+
+### Builds
+
+* :package: add l5-swagger to composer dependencies ([755b84](https://github.com/mateusmacedo/febrafar-back-php/commit/755b84c2cef3480bb3155cf0e0d3f8bc814207c0))
+
+### Documentation
+
+* :books: add bearer token support to swagger docs ([a9c7d3](https://github.com/mateusmacedo/febrafar-back-php/commit/a9c7d3e8ee8ec032980f77e3be62fd9fedda2c24))
+
+### Chores
+
+* :wrench: remove commented xdebug settings for cleanup ([6c5706](https://github.com/mateusmacedo/febrafar-back-php/commit/6c57062f7972591f62e7c95bb189ba6f2891d45c))
+
+
+---
+
 ## [0.3.2](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.3.1...v0.3.2) (2024-06-10)
 
 ### Code Refactoring
