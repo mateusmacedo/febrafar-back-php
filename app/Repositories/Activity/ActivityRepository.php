@@ -10,11 +10,23 @@ use Illuminate\Support\Collection;
 
 class ActivityRepository implements ActivityRepositoryInterface
 {
-    public function findByDateRange(ActivityIndexDTO $dateRange): Collection
+    public function find(ActivityIndexDTO $dateRange): Collection
     {
-        return Activity::where('user_id', $dateRange->userId)
-            ->whereBetween('start_date', [$dateRange->startDate, $dateRange->endDate])
-            ->get();
+        $query = Activity::query();
+
+        if ($dateRange->userId !== null) {
+            $query->where('user_id', $dateRange->userId);
+        }
+
+        if ($dateRange->startDate !== null) {
+            $query->where('start_date', '>=', $dateRange->startDate);
+        }
+
+        if ($dateRange->endDate !== null) {
+            $query->where('start_date', '<=', $dateRange->endDate);
+        }
+
+        return $query->get();
     }
 
     public function findById(ActivityShowDTO $dto): ?Activity
