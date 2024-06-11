@@ -17,7 +17,8 @@ class ActivityUpdateDTOFactory implements ActivityUpdateDTOFactoryInterface
             startDate: $request->input('start_date') ? new \DateTimeImmutable($request->input('start_date')) : null,
             dueDate: $request->input('due_date') ? new \DateTimeImmutable($request->input('due_date')) : null,
             completionDate: $request->input('completion_date') ? new \DateTimeImmutable($request->input('completion_date')) : null,
-            status: $request->input('status')
+            status: $request->input('status'),
+            userId: $request->input('user_id')
         );
     }
 }

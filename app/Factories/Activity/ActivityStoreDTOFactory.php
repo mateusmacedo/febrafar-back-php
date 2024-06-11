@@ -18,7 +18,7 @@ class ActivityStoreDTOFactory implements ActivityStoreDTOFactoryInterface
             dueDate: new \DateTimeImmutable($request->input('due_date')),
             completionDate: $request->input('completion_date') ? new \DateTimeImmutable($request->input('completion_date')) : null,
             status: $request->input('status'),
-            userId: $request->user()->id
+            userId: $request->input('user_id')
         );
     }
 }
