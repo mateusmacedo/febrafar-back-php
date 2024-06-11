@@ -4,6 +4,43 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.5.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.4.0...v0.5.0) (2024-06-11)
+
+### Features
+
+* :sparkles: add activity repository interface implementation ([f0ee76](https://github.com/mateusmacedo/febrafar-back-php/commit/f0ee7665eef5debe6893e0833cf95a29d82b3c99))
+* :sparkles: add activity service and interface ([0a7610](https://github.com/mateusmacedo/febrafar-back-php/commit/0a7610708a86335d199372382d1c820cc2bc1bc3))
+* :sparkles: add bindings for activity and auth services ([aee669](https://github.com/mateusmacedo/febrafar-back-php/commit/aee6696852a59249a75d78507ea88245f5c61538))
+* :sparkles: add DTO and request validation classes for Activity ([e3ef15](https://github.com/mateusmacedo/febrafar-back-php/commit/e3ef157f12f54f956c57db9d6ecde909cfab4479))
+* :sparkles: add middleware for user ID injection ([34a9da](https://github.com/mateusmacedo/febrafar-back-php/commit/34a9dad4752d12cb751bf5b2f830199c24d2f193))
+* :sparkles: add validation for activity dates and overlaps ([79e012](https://github.com/mateusmacedo/febrafar-back-php/commit/79e01265f284bbc886f813397c97ba1e07686de0))
+* :sparkles: inject user id into request when authenticated ([750939](https://github.com/mateusmacedo/febrafar-back-php/commit/7509396e3206287ce53832715b1c5009c3ad9d67))
+* :sparkles: introduce activity factory for DTO creation ([f3c5c7](https://github.com/mateusmacedo/febrafar-back-php/commit/f3c5c7569de4a25e87d4f221f9a2045fa042db23))
+
+### Bug Fixes
+
+* :bug: ensure user id is taken from request input ([eddadf](https://github.com/mateusmacedo/febrafar-back-php/commit/eddadf999cf0a280ddaf32a070083f9adf52e25e))
+
+### Code Refactoring
+
+* :hammer: make activity search more flexible ([6c42cb](https://github.com/mateusmacedo/febrafar-back-php/commit/6c42cbcb51332f9ed73ceaeb6c5e6b65c6b0edb4))
+* :hammer: simplify activity controller DI management ([cee0ec](https://github.com/mateusmacedo/febrafar-back-php/commit/cee0ec9c96cba4fef96a0a2ff15ea0935ff7c9bf))
+* :hammer: simplify activity service construction ([0d4e2f](https://github.com/mateusmacedo/febrafar-back-php/commit/0d4e2fb19024dc61ba654274736b908ae3cb94bf))
+* :hammer: use dtos and services in activity controller ([e9bc99](https://github.com/mateusmacedo/febrafar-back-php/commit/e9bc993d7d969e46cf71c6ec60b18af6d6f85f30))
+
+### Tests
+
+* :test_tube: add phpstan ignore line for user mock ([eaca2a](https://github.com/mateusmacedo/febrafar-back-php/commit/eaca2a19cee649a80e3cc941b9ffce3d73208e74))
+
+### Documentation
+
+* :books: add OpenAPI annotations for activities endpoints ([1c3300](https://github.com/mateusmacedo/febrafar-back-php/commit/1c3300a94ce3645a709fee91542b6e1a148f9eb9))
+* :books: add OpenAPI schema for Activity model ([75c899](https://github.com/mateusmacedo/febrafar-back-php/commit/75c899510ee02a17057b44d67e82d6d0965e10e4))
+* :books: add OpenAPI schemas for activity requests ([6f01f0](https://github.com/mateusmacedo/febrafar-back-php/commit/6f01f0daefbdd5bda4c71fb040df9f5101f31825))
+
+
+---
+
 ## [0.4.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.3.2...v0.4.0) (2024-06-11)
 
 ### Features
