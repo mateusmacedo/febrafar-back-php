@@ -4,6 +4,15 @@
 All notable changes to this project will be documented in this file.
 <!--- END HEADER -->
 
+## [0.5.1](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.5.0...v0.5.1) (2024-06-11)
+
+### Code Refactoring
+
+* :hammer: simplify `AuthCredentialsDTO` constructor with readonly properties ([3ad006](https://github.com/mateusmacedo/febrafar-back-php/commit/3ad006303a164c5a68bbc8ffc26f0b37aaffc807))
+
+
+---
+
 ## [0.5.0](https://github.com/mateusmacedo/febrafar-back-php/compare/v0.4.0...v0.5.0) (2024-06-11)
 
 ### Features
